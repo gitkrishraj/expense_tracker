@@ -81,10 +81,47 @@ class _NewExpenseState extends State<NewExpense>{
 
   @override
   Widget build (BuildContext context){
-    return   Padding(
-      padding: const  EdgeInsets.fromLTRB(16 ,45, 16, 16),
+    final keyboardSpace = MediaQuery.of(context).viewInsets.bottom;
+    return LayoutBuilder(builder: (ctx, constraints) {
+     final width = constraints.maxWidth;
+
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+
+      
+    
+    child:   Padding(
+      padding:   EdgeInsets.fromLTRB(16 ,45, 16, keyboardSpace + 16),
       child: Column(
         children:  [
+          if (width >= 600)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Expanded (
+                child: TextField(
+            controller: _titleController,
+            maxLength: 50,
+            decoration: const InputDecoration(
+              label: Text ('title'),
+            ) ,
+          ),
+               ),
+           const SizedBox(width: 24),
+             Expanded(
+             child:TextField(
+            controller: _amountController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              prefixText:'\$' ,
+              label: Text ('Amount'),
+            ) ,
+          ),
+             ),
+            ],
+          )
+          else 
           TextField(
             controller: _titleController,
             maxLength: 50,
@@ -166,7 +203,12 @@ class _NewExpenseState extends State<NewExpense>{
           ),
         ],
       ),
+    ),
+      ),
     );
+    },
+    );
+
   }
 
 }

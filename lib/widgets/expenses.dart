@@ -34,6 +34,7 @@ final List<Expense> _registeredExpenses =[
 ];
 void _openAddExpenseOverlay(){
   showModalBottomSheet(
+    useSafeArea: true,
     isScrollControlled: true,
   context: context,
    builder: (ctx)=> NewExpense(onAddExpense: _addExpense),
@@ -70,6 +71,10 @@ void _removeExpense(Expense expense){
 
   @override
   Widget build(BuildContext context){
+
+  
+   final width = MediaQuery.of(context).size.width;
+
     Widget mainContext =const Center(
       child: Text('No expenses found.start adding some'),
     );
@@ -82,6 +87,7 @@ void _removeExpense(Expense expense){
 
    return  Scaffold (
     appBar: AppBar(
+      centerTitle: false,
       title: const Text('Flutter ExpenseTracker'),
      actions: [
       IconButton(
@@ -90,7 +96,8 @@ void _removeExpense(Expense expense){
       ),
      ], 
     ),
-    body: Column(
+    body:width < 600
+    ? Column(
     children:  [
       Chart (expenses: _registeredExpenses),
       Expanded(
@@ -98,7 +105,16 @@ void _removeExpense(Expense expense){
         
       ),
    ],
-   ),
+   )
+   : Row(children: [
+    Expanded(
+      child: Chart (expenses: _registeredExpenses),
+    ),
+      Expanded(
+       child:mainContext
+        
+      ),
+   ]),
    );
   }
 }
